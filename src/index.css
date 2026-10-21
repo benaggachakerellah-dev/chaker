@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium Design System */
+:root {
+  --color-primary: #D4A574;
+  --color-dark: #2D1810;
+  --color-light: #F5F0E8;
+  --color-accent: #8B6F47;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #E8C4A0;
+    --color-dark: #1a0f08;
+    --color-light: #3d3028;
+    --color-accent: #B8956A;
+  }
+}
+
+body {
+  @apply bg-desert-light text-desert-dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium Buttons */
+.btn-primary {
+  @apply px-6 py-3 bg-desert-gold text-desert-dark font-semibold rounded-lg hover:bg-amber-date transition-colors;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-desert-dark text-desert-light font-semibold rounded-lg hover:bg-amber-date hover:text-desert-dark transition-colors;
+}
+
+/* Premium Card */
+.card {
+  @apply bg-white rounded-xl shadow-lg border border-desert-light p-6;
+}
