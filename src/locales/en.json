@@ -1,0 +1,122 @@
+{
+  "common": {
+    "brand": "Desert Gold",
+    "tagline": "Premium dates, verified quality, transparent provenance.",
+    "catalog": "Catalog",
+    "traceability": "Traceability",
+    "farms": "Farms",
+    "cart": "Cart",
+    "phaseNotice": "Phase A — Foundation."
+  },
+  "home": {
+    "title": "Welcome to Desert Gold",
+    "subtitle": "Premium dates e-commerce marketplace featuring selected oasis farms."
+  },
+  "catalog": {
+    "title": "Product Catalog",
+    "subtitle": "Browse verified premium Algerian dates from selected farms",
+    "filterBy": "Filter by",
+    "category": "Category",
+    "search": "Search products...",
+    "price": "Price",
+    "origin": "Origin",
+    "grade": "Grade",
+    "synthetic": "Synthetic Demo Data",
+    "viewDetails": "View Details",
+    "noProducts": "No products found matching your criteria."
+  },
+  "product": {
+    "farm": "Producer Farm",
+    "variants": "Packages & Sizes",
+    "price": "Price",
+    "stock": "Stock",
+    "weight": "Weight",
+    "addToCart": "Add to Cart",
+    "traceability": "Traceability & QC Record",
+    "qcPassed": "Quality Inspection Passed",
+    "qcPending": "Quality Inspection Pending",
+    "harvestDate": "Harvest Date",
+    "expiryDate": "Expiry Date",
+    "inspectorNotes": "Inspector Notes"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your shopping cart is empty",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping Fee",
+    "total": "Total",
+    "checkout": "Proceed to Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "title": "Checkout (Cash on Delivery)",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "region": "Region / Wilaya",
+    "city": "City",
+    "street": "Street Address",
+    "codNotice": "Cash on Delivery (COD)",
+    "placeOrder": "Confirm Order",
+    "orderSummary": "Order Summary"
+  },
+  "orders": {
+    "title": "My Orders",
+    "noOrders": "No past orders found",
+    "orderNo": "Order #",
+    "status": "Status",
+    "total": "Total",
+    "date": "Date",
+    "details": "Details",
+    "timeline": "Order Status Timeline"
+  },
+  "qc": {
+    "title": "Quality Control (QC) Dashboard",
+    "pendingBatches": "Pending Batches",
+    "startInspection": "Start Inspection",
+    "moisture": "Moisture Level",
+    "size": "Size / Grade",
+    "insects": "Visible Insects",
+    "packaging": "Packaging Condition",
+    "expiry": "Expiry Date Valid",
+    "pass": "Pass",
+    "fail": "Fail",
+    "notes": "Inspector Notes",
+    "submit": "Submit Inspection Result"
+  },
+  "farm": {
+    "title": "Farm Dashboard",
+    "orders": "Farm Orders",
+    "assignBatch": "Assign Batch",
+    "moveToQC": "Move to Quality Check",
+    "selectBatch": "Select Approved Batch"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "metrics": "Key Metrics",
+    "totalOrders": "Total Orders",
+    "totalRevenue": "Total Revenue",
+    "totalCommissions": "Total Commissions",
+    "pendingQC": "Pending QC Inspections",
+    "recentOrders": "Recent Orders",
+    "pendingFarms": "Pending Farm Approvals",
+    "approve": "Approve",
+    "suspend": "Suspend",
+    "farmManagement": "Farm Management",
+    "productManagement": "Product Management",
+    "settings": "Platform Settings",
+    "payouts": "Settlements & Payouts",
+    "commissionRate": "Commission Rate",
+    "active": "Active",
+    "inactive": "Inactive",
+    "updateSetting": "Update Setting",
+    "createPayout": "Create Payout",
+    "amountOwed": "Amount Owed",
+    "farmName": "Farm Name",
+    "status": "Status",
+    "actions": "Actions",
+    "save": "Save",
+    "noFarms": "No farms found",
+    "noProducts": "No products found"
+  }
+}

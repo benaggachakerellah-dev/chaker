@@ -1,0 +1,122 @@
+{
+  "common": {
+    "brand": "Or du Désert",
+    "tagline": "Dattes premium, qualité vérifiée et provenance transparente.",
+    "catalog": "Catalogue",
+    "traceability": "Traçabilité",
+    "farms": "Fermes",
+    "cart": "Panier",
+    "phaseNotice": "Phase A — Fondation."
+  },
+  "home": {
+    "title": "Bienvenue sur Or du Désert",
+    "subtitle": "Marketplace e-commerce de dattes d'exception issues des meilleures oasiens."
+  },
+  "catalog": {
+    "title": "Catalogue des Produits",
+    "subtitle": "Découvrez nos dattes algériennes d'exception certifiées et traçables",
+    "filterBy": "Filtrer par",
+    "category": "Catégorie",
+    "search": "Rechercher un produit...",
+    "price": "Prix",
+    "origin": "Origine",
+    "grade": "Qualité",
+    "synthetic": "Données Démo Synthétiques",
+    "viewDetails": "Voir les détails",
+    "noProducts": "Aucun produit ne correspond à vos critères."
+  },
+  "product": {
+    "farm": "Ferme Productrice",
+    "variants": "Formats et Poids",
+    "price": "Prix",
+    "stock": "Stock",
+    "weight": "Poids",
+    "addToCart": "Ajouter au Panier",
+    "traceability": "Traçabilité et Contrôle Qualité",
+    "qcPassed": "Contrôle Qualité Validé",
+    "qcPending": "Contrôle Qualité en Attente",
+    "harvestDate": "Date de Récolte",
+    "expiryDate": "Date d'Expiration",
+    "inspectorNotes": "Notes de l'Inspecteur"
+  },
+  "cart": {
+    "title": "Panier d'achat",
+    "empty": "Votre panier est vide",
+    "subtotal": "Sous-total",
+    "shipping": "Frais de livraison",
+    "total": "Total",
+    "checkout": "Procéder au Paiement",
+    "remove": "Supprimer",
+    "quantity": "Quantité"
+  },
+  "checkout": {
+    "title": "Commander (Paiement à la livraison)",
+    "fullName": "Nom Complet",
+    "phone": "Numéro de Téléphone",
+    "region": "Wilaya / Région",
+    "city": "Ville",
+    "street": "Adresse Rue",
+    "codNotice": "Paiement en espèces à la livraison (COD)",
+    "placeOrder": "Confirmer la Commande",
+    "orderSummary": "Résumé de la Commande"
+  },
+  "orders": {
+    "title": "Mes Commandes",
+    "noOrders": "Aucune commande trouvée",
+    "orderNo": "Commande #",
+    "status": "Statut",
+    "total": "Total",
+    "date": "Date",
+    "details": "Détails",
+    "timeline": "Suivi de Commande"
+  },
+  "qc": {
+    "title": "Tableau de Bord Contrôle Qualité (QC)",
+    "pendingBatches": "Lots en Attente d'Inspection",
+    "startInspection": "Commencer l'Inspection",
+    "moisture": "Niveau d'Humidité",
+    "size": "Taille / Calibre",
+    "insects": "Insectes Visibles",
+    "packaging": "État de l'Emballage",
+    "expiry": "Date de Péremption Valide",
+    "pass": "Conforme",
+    "fail": "Non Conforme",
+    "notes": "Notes de l'Inspecteur",
+    "submit": "Soumettre le Résultat"
+  },
+  "farm": {
+    "title": "Tableau de Bord Ferme",
+    "orders": "Commandes de la Ferme",
+    "assignBatch": "Assigner un Lot",
+    "moveToQC": "Envoyer au Contrôle Qualité",
+    "selectBatch": "Sélectionner un Lot Approuvé"
+  },
+  "admin": {
+    "title": "Tableau de Bord Administrateur",
+    "metrics": "Indicateurs Clés",
+    "totalOrders": "Total Commandes",
+    "totalRevenue": "Revenu Total",
+    "totalCommissions": "Total Commissions",
+    "pendingQC": "Inspections QC en Attente",
+    "recentOrders": "Commandes Récentes",
+    "pendingFarms": "Fermes en Attente d'Approbation",
+    "approve": "Approuver",
+    "suspend": "Suspendre",
+    "farmManagement": "Gestion des Fermes",
+    "productManagement": "Gestion des Produits",
+    "settings": "Paramètres Plateforme",
+    "payouts": "Règlements et Paiements",
+    "commissionRate": "Taux de Commission",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "updateSetting": "Mettre à Jour",
+    "createPayout": "Créer un Paiement",
+    "amountOwed": "Montant Dû",
+    "farmName": "Nom de la Ferme",
+    "status": "Statut",
+    "actions": "Actions",
+    "save": "Enregistrer",
+    "noFarms": "Aucune ferme trouvée",
+    "noProducts": "Aucun produit trouvé"
+  }
+}

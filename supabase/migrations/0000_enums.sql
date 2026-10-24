@@ -1,0 +1,10 @@
+CREATE TYPE user_role AS ENUM ('customer', 'farm', 'qc', 'admin');
+CREATE TYPE farm_status AS ENUM ('pending', 'approved', 'suspended');
+CREATE TYPE product_grade AS ENUM ('premium', 'first', 'second');
+CREATE TYPE farming_method AS ENUM ('organic', 'conventional');
+CREATE TYPE batch_status AS ENUM ('pending', 'approved', 'rejected');
+CREATE TYPE order_status AS ENUM ('placed', 'preparing', 'quality_check', 'shipped', 'delivered', 'cancelled', 'returned');
+CREATE TYPE payment_status AS ENUM ('pending', 'collected', 'refunded');
+CREATE TYPE payout_status AS ENUM ('pending', 'paid');
+CREATE TYPE review_moderation AS ENUM ('pending', 'approved', 'rejected');
+CREATE TYPE data_source AS ENUM ('synthetic', 'verified');
