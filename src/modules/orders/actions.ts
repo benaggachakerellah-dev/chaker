@@ -53,36 +53,65 @@ export async function getCart() {
 
   return { cart, items: items || [] };
 }
+export async function addToCart(variantId: string, quantity: number) {
+  try {
+    const supabase = createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
+      return { error: 'You must be logged in to add to cart' };
+    }
 
-export async function addToCart(variantId: string, quantity: number = 1) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+    // Get or create cart
+    let { data: cart } = await supabase
+      .from('carts')
+      .select('id')
+      .eq('user_id', user.id)
+      .single();
 
-  if (!user) {
-    throw new Error('User must be logged in to add items to cart');
-  }
+    if (!cart) {
+      const { data: newCart, error: cartError } = await supabase
+        .from('carts')
+        .insert({ user_id: user.id })
+        .select('id')
+        .single();
+      if (cartError) throw cartError;
+      cart = newCart;
+    }
 
-  const { cart, items } = await getCart();
-  if (!cart) throw new Error('Cart not found');
-
-  // Check if variant already in cart
-  const existingItem = items.find(item => item.product_variant_id === variantId);
-
-  if (existingItem) {
-    const newQty = existingItem.quantity + quantity;
-    const { error } = await supabase
+    // Check if item already exists
+    const { data: existingItem } = await supabase
       .from('cart_items')
-      .update({ quantity: newQty })
-      .eq('id', existingItem.id);
-    if (error) throw new Error(error.message);
-  } else {
-    const { error } = await supabase
-      .from('cart_items')
-      .insert({ cart_id: cart.id, product_variant_id: variantId, quantity });
-    if (error) throw new Error(error.message);
-  }
+      .select('id, quantity')
+      .eq('cart_id', cart.id)
+      .eq('variant_id', variantId)
+      .single();
 
-  revalidatePath('/[locale]/cart', 'layout');
+    if (existingItem) {
+      // Update quantity
+      const { error } = await supabase
+        .from('cart_items')
+        .update({ quantity: existingItem.quantity + quantity })
+        .eq('id', existingItem.id);
+      if (error) throw error;
+    } else {
+      // Insert new item
+      const { error } = await supabase
+        .from('cart_items')
+        .insert({
+          cart_id: cart.id,
+          variant_id: variantId,
+          quantity: quantity,
+        });
+      if (error) throw error;
+    }
+
+    revalidatePath('/[locale]/cart', 'page');
+    return { success: true };
+  } catch (error: any) {
+    console.error('Add to cart error:', error);
+    return { error: error.message || 'Failed to add to cart' };
+  }
 }
 
 export async function removeFromCart(cartItemId: string) {
