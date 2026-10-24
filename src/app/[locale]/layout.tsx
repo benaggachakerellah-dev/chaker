@@ -28,36 +28,96 @@ export default async function LocaleLayout({
   }
 
   return (
-    <div dir={dir} lang={locale} className="min-h-screen flex flex-col bg-[#FDFBF7]">
-      <header className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center shadow-sm">
-        <Link href={`/${locale}`} className="text-xl font-bold font-serif text-[#3E2723] flex items-center gap-2 no-underline">
-          <span>🌴</span> Desert Gold
-        </Link>
-        <div className="flex items-center gap-6">
-          <Link href={`/${locale}/catalog`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline">
-            {locale === 'ar' ? 'الكتالوج' : 'Catalog'}
+    <div dir={dir} lang={locale} className="min-h-screen flex flex-col bg-[#F7F3EB] text-[#27231F]">
+      <header className="bg-white border-b border-[#E7DED1] sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+          <Link href={`/${locale}`} className="text-xl font-bold font-serif text-[#35251C] flex items-center gap-2">
+            <span className="text-2xl">🌴</span>
+            <span>{locale === 'ar' ? 'الذهب الصحراوي' : 'Desert Gold'}</span>
           </Link>
-          <Link href={`/${locale}/cart`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline">
-            {locale === 'ar' ? 'السلة' : 'Cart'}
-          </Link>
-          <Link href={`/${locale}/account/orders`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline">
-            {locale === 'ar' ? 'طلباتي' : 'My Orders'}
-          </Link>
-          {user && (
-            <Link href={`/${locale}/account/notifications`} className="relative text-xl no-underline">
-              🔔
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                  {unreadCount}
-                </span>
-              )}
+
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href={`/${locale}`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
+              {locale === 'ar' ? 'الرئيسية' : 'Home'}
             </Link>
-          )}
+            <Link href={`/${locale}/catalog`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
+              {locale === 'ar' ? 'الكتالوج' : 'Catalog'}
+            </Link>
+            <Link href={`/${locale}/farms`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
+              {locale === 'ar' ? 'المزارع' : 'Farms'}
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-5">
+            <Link href={`/${locale}/cart`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition flex items-center gap-1.5">
+              <span>🛒</span>
+              <span className="hidden sm:inline">{locale === 'ar' ? 'السلة' : 'Cart'}</span>
+            </Link>
+            <Link href={`/${locale}/account/orders`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition flex items-center gap-1.5">
+              <span>📦</span>
+              <span className="hidden sm:inline">{locale === 'ar' ? 'طلباتي' : 'Orders'}</span>
+            </Link>
+            {user && (
+              <Link href={`/${locale}/account/notifications`} className="relative text-lg p-1">
+                🔔
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-[#626C45] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
+            )}
+          </div>
         </div>
       </header>
+
       <main className="flex-1">{children}</main>
-      <footer className="bg-[#3E2723] text-white py-6 text-center text-sm">
-        Desert Gold 2026 — Verified Provenance & Premium Oasis Dates
+
+      <footer className="bg-[#35251C] text-[#F7F3EB] pt-16 pb-12 border-t border-[#E7DED1]/20">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          <div className="space-y-4">
+            <h3 className="font-serif text-lg font-bold text-white flex items-center gap-2">
+              <span>🌴</span> {locale === 'ar' ? 'الذهب الصحراوي' : 'Desert Gold'}
+            </h3>
+            <p className="text-sm text-[#E7DED1]/80 leading-relaxed">
+              {locale === 'ar'
+                ? 'منصة التجارة الإلكترونية للتمور الفاخرة من أودية ومزارع الجزائر المختارة بعناية.'
+                : 'Premium date e-commerce marketplace featuring selected Algerian oasis farms and verified provenance.'}
+            </p>
+          </div>
+          <div>
+            <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
+              {locale === 'ar' ? 'روابط سريعة' : 'Quick Links'}
+            </h4>
+            <ul className="space-y-2.5 text-sm text-[#E7DED1]/80">
+              <li><Link href={`/${locale}/catalog`} className="hover:text-white transition">{locale === 'ar' ? 'كتالوج المنتجات' : 'Product Catalog'}</Link></li>
+              <li><Link href={`/${locale}/farms`} className="hover:text-white transition">{locale === 'ar' ? 'المزارع الشريكة' : 'Our Partner Farms'}</Link></li>
+              <li><Link href={`/${locale}/cart`} className="hover:text-white transition">{locale === 'ar' ? 'سلة المشتريات' : 'Shopping Cart'}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
+              {locale === 'ar' ? 'حسابي' : 'Account'}
+            </h4>
+            <ul className="space-y-2.5 text-sm text-[#E7DED1]/80">
+              <li><Link href={`/${locale}/account/orders`} className="hover:text-white transition">{locale === 'ar' ? 'طلباتي' : 'My Orders'}</Link></li>
+              <li><Link href={`/${locale}/account/notifications`} className="hover:text-white transition">{locale === 'ar' ? 'الإشعارات' : 'Notifications'}</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
+              {locale === 'ar' ? 'الجودة والثقة' : 'Trust & Quality'}
+            </h4>
+            <p className="text-xs text-[#E7DED1]/70 leading-relaxed">
+              {locale === 'ar'
+                ? 'جميع التمور تخضع لفحص دقيق للرطوبة والنقاء وفق أعلى معايير الجودة الزراعية.'
+                : 'All dates undergo rigorous 5-point quality inspection for moisture, size, and purity.'}
+            </p>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-[#E7DED1]/10 text-center text-xs text-[#E7DED1]/60">
+          © 2026 Desert Gold. All rights reserved. Verified Provenance & Premium Oasis Dates.
+        </div>
       </footer>
     </div>
   );

@@ -1,24 +1,19 @@
 import React from 'react';
 import clsx from 'clsx';
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'success' | 'warning' | 'neutral';
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: 'primary' | 'olive' | 'sand';
 }
 
-export const Badge: React.FC<BadgeProps> = ({
-  children,
-  variant = 'neutral',
-  className,
-  ...props
-}) => {
+export function Badge({ children, className, variant = 'primary', ...props }: BadgeProps) {
   return (
     <span
       className={clsx(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold',
+        'inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium',
         {
-          'bg-green-100 text-green-800': variant === 'success',
-          'bg-amber-100 text-amber-800': variant === 'warning',
-          'bg-desert-light text-desert-dark': variant === 'neutral',
+          'bg-palm/10 text-palm': variant === 'primary',
+          'bg-olive/10 text-olive': variant === 'olive',
+          'bg-sand/30 text-date': variant === 'sand',
         },
         className
       )}
@@ -27,4 +22,4 @@ export const Badge: React.FC<BadgeProps> = ({
       {children}
     </span>
   );
-};
+}
