@@ -8,6 +8,7 @@ export async function generateStaticParams() {
 
 export default async function HomePage({ params }: { params: { locale: Locale } }) {
   const { locale } = params;
+  const isAr = locale === 'ar';
 
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,8 +24,6 @@ export default async function HomePage({ params }: { params: { locale: Locale } 
     supabase.from('categories').select('*').limit(3),
     supabase.from('farms').select('*').eq('status', 'approved').limit(3)
   ]);
-
-  const isAr = locale === 'ar';
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F7F3EB] text-[#27231F]">
@@ -190,7 +189,7 @@ export default async function HomePage({ params }: { params: { locale: Locale } 
             <div className="text-3xl mb-2">🔒</div>
             <h3 className="font-serif font-bold text-[#35251C]">{isAr ? 'دفع آمن عند الاستلام' : 'Secure Cash on Delivery'}</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
-              {isAr ? 'ادفع نقداً بكل أمان وسهولة عند استلام طلبك حتى باب منزلك.' : 'Pay securely with cash upon delivery right to your doorstep.'}
+              {isAr ? 'ادفع نقداً بكل أمان وسهولة عند استلاست طلبك حتى باب منزلك.' : 'Pay securely with cash upon delivery right to your doorstep.'}
             </p>
           </div>
           <div className="space-y-2">

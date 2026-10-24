@@ -14,6 +14,7 @@ export default async function LocaleLayout({
 }) {
   const { locale } = params;
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  const isAr = locale === 'ar';
 
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -33,29 +34,29 @@ export default async function LocaleLayout({
         <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <Link href={`/${locale}`} className="text-xl font-bold font-serif text-[#35251C] flex items-center gap-2">
             <span className="text-2xl">🌴</span>
-            <span>{locale === 'ar' ? 'الذهب الصحراوي' : 'Desert Gold'}</span>
+            <span>{isAr ? 'الذهب الصحراوي' : 'Desert Gold'}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
             <Link href={`/${locale}`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
-              {locale === 'ar' ? 'الرئيسية' : 'Home'}
+              {isAr ? 'الرئيسية' : 'Home'}
             </Link>
             <Link href={`/${locale}/catalog`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
-              {locale === 'ar' ? 'الكتالوج' : 'Catalog'}
+              {isAr ? 'الكتالوج' : 'Catalog'}
             </Link>
             <Link href={`/${locale}/farms`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
-              {locale === 'ar' ? 'المزارع' : 'Farms'}
+              {isAr ? 'المزارع' : 'Farms'}
             </Link>
           </nav>
 
           <div className="flex items-center gap-5">
             <Link href={`/${locale}/cart`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition flex items-center gap-1.5">
               <span>🛒</span>
-              <span className="hidden sm:inline">{locale === 'ar' ? 'السلة' : 'Cart'}</span>
+              <span className="hidden sm:inline">{isAr ? 'السلة' : 'Cart'}</span>
             </Link>
             <Link href={`/${locale}/account/orders`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition flex items-center gap-1.5">
               <span>📦</span>
-              <span className="hidden sm:inline">{locale === 'ar' ? 'طلباتي' : 'Orders'}</span>
+              <span className="hidden sm:inline">{isAr ? 'طلباتي' : 'Orders'}</span>
             </Link>
             {user && (
               <Link href={`/${locale}/account/notifications`} className="relative text-lg p-1">
@@ -77,39 +78,39 @@ export default async function LocaleLayout({
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           <div className="space-y-4">
             <h3 className="font-serif text-lg font-bold text-white flex items-center gap-2">
-              <span>🌴</span> {locale === 'ar' ? 'الذهب الصحراوي' : 'Desert Gold'}
+              <span>🌴</span> {isAr ? 'الذهب الصحراوي' : 'Desert Gold'}
             </h3>
             <p className="text-sm text-[#E7DED1]/80 leading-relaxed">
-              {locale === 'ar'
+              {isAr
                 ? 'منصة التجارة الإلكترونية للتمور الفاخرة من أودية ومزارع الجزائر المختارة بعناية.'
                 : 'Premium date e-commerce marketplace featuring selected Algerian oasis farms and verified provenance.'}
             </p>
           </div>
           <div>
             <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
-              {locale === 'ar' ? 'روابط سريعة' : 'Quick Links'}
+              {isAr ? 'روابط سريعة' : 'Quick Links'}
             </h4>
             <ul className="space-y-2.5 text-sm text-[#E7DED1]/80">
-              <li><Link href={`/${locale}/catalog`} className="hover:text-white transition">{locale === 'ar' ? 'كتالوج المنتجات' : 'Product Catalog'}</Link></li>
-              <li><Link href={`/${locale}/farms`} className="hover:text-white transition">{locale === 'ar' ? 'المزارع الشريكة' : 'Our Partner Farms'}</Link></li>
-              <li><Link href={`/${locale}/cart`} className="hover:text-white transition">{locale === 'ar' ? 'سلة المشتريات' : 'Shopping Cart'}</Link></li>
+              <li><Link href={`/${locale}/catalog`} className="hover:text-white transition">{isAr ? 'كتالوج المنتجات' : 'Product Catalog'}</Link></li>
+              <li><Link href={`/${locale}/farms`} className="hover:text-white transition">{isAr ? 'المزارع الشريكة' : 'Our Partner Farms'}</Link></li>
+              <li><Link href={`/${locale}/cart`} className="hover:text-white transition">{isAr ? 'سلة المشتريات' : 'Shopping Cart'}</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
-              {locale === 'ar' ? 'حسابي' : 'Account'}
+              {isAr ? 'حسابي' : 'Account'}
             </h4>
             <ul className="space-y-2.5 text-sm text-[#E7DED1]/80">
-              <li><Link href={`/${locale}/account/orders`} className="hover:text-white transition">{locale === 'ar' ? 'طلباتي' : 'My Orders'}</Link></li>
-              <li><Link href={`/${locale}/account/notifications`} className="hover:text-white transition">{locale === 'ar' ? 'الإشعارات' : 'Notifications'}</Link></li>
+              <li><Link href={`/${locale}/account/orders`} className="hover:text-white transition">{isAr ? 'طلباتي' : 'My Orders'}</Link></li>
+              <li><Link href={`/${locale}/account/notifications`} className="hover:text-white transition">{isAr ? 'الإشعارات' : 'Notifications'}</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
-              {locale === 'ar' ? 'الجودة والثقة' : 'Trust & Quality'}
+              {isAr ? 'الجودة والثقة' : 'Trust & Quality'}
             </h4>
             <p className="text-xs text-[#E7DED1]/70 leading-relaxed">
-              {locale === 'ar'
+              {isAr
                 ? 'جميع التمور تخضع لفحص دقيق للرطوبة والنقاء وفق أعلى معايير الجودة الزراعية.'
                 : 'All dates undergo rigorous 5-point quality inspection for moisture, size, and purity.'}
             </p>
