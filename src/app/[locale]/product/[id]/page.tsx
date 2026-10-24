@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { Locale, locales } from '@/lib/i18n/config';
-import { t } from '@/lib/i18n/t';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import AddToCartButton from '@/components/AddToCartButton';
+import { notFound } from 'next/navigation';
+import { t } from '@/lib/i18n/t';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -61,9 +61,9 @@ export default async function ProductDetailPage({
   const firstVariant = product.product_variants?.[0];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      <div className="mb-6">
-        <Link href={`/${locale}/catalog`} className="text-sm text-desert-gold hover:underline">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <div>
+        <Link href={`/${locale}/catalog`} className="text-sm font-medium text-[#D4AF37] hover:underline">
           ← {locale === 'ar' ? 'العودة إلى الكتالوج' : 'Back to Catalog'}
         </Link>
       </div>
@@ -71,33 +71,33 @@ export default async function ProductDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Image & Traceability Card */}
         <div className="space-y-6">
-          <div className="bg-amber-50 rounded-2xl h-96 flex items-center justify-center relative shadow-inner">
-            <span className="text-8xl">🌴</span>
-            {product.data_source === 'synthetic' && (
-              <span className="absolute top-4 right-4 bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full font-medium">
-                {t('catalog.synthetic', locale)}
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl h-96 flex items-center justify-center relative shadow-premium border border-amber-200/50">
+            <span className="text-9xl">🌴</span>
+            {product.grade === 'premium' && (
+              <span className="absolute top-4 right-4 bg-[#D4AF37] text-[#3E2723] text-xs px-4 py-1.5 rounded-full font-bold shadow-sm">
+                Premium
               </span>
             )}
           </div>
 
           {/* Traceability Box */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="font-serif font-bold text-lg mb-4 text-desert-dark flex items-center gap-2">
+          <div className="bg-white p-6 rounded-2xl shadow-premium border border-gray-100">
+            <h3 className="font-serif font-bold text-lg mb-4 text-[#3E2723] flex items-center gap-2">
               <span>🛡️</span> {t('product.traceability', locale)}
             </h3>
             {approvedBatch ? (
               <div className="space-y-3 text-sm">
-                <div className="flex items-center gap-2 text-green-700 bg-green-50 p-3 rounded-xl font-medium">
+                <div className="flex items-center gap-2 text-green-700 bg-green-50 p-3 rounded-xl font-medium border border-green-100">
                   <span>✅</span> {t('product.qcPassed', locale)}
                 </div>
                 <div className="grid grid-cols-2 gap-4 pt-2">
                   <div>
                     <span className="text-gray-500 block text-xs">{t('product.harvestDate', locale)}</span>
-                    <span className="font-medium">{approvedBatch.harvest_date}</span>
+                    <span className="font-medium text-gray-800">{approvedBatch.harvest_date}</span>
                   </div>
                   <div>
                     <span className="text-gray-500 block text-xs">{t('product.expiryDate', locale)}</span>
-                    <span className="font-medium">{approvedBatch.expiry_date}</span>
+                    <span className="font-medium text-gray-800">{approvedBatch.expiry_date}</span>
                   </div>
                 </div>
                 {inspection?.notes && (
@@ -108,7 +108,7 @@ export default async function ProductDetailPage({
                 )}
               </div>
             ) : (
-              <div className="bg-amber-50 text-amber-800 p-4 rounded-xl text-sm font-medium">
+              <div className="bg-amber-50 text-amber-800 p-4 rounded-xl text-sm font-medium border border-amber-100">
                 ⏳ {t('product.qcPending', locale)}
               </div>
             )}
@@ -118,24 +118,24 @@ export default async function ProductDetailPage({
         {/* Product Info & Variants */}
         <div className="space-y-6">
           <div>
-            <span className="text-sm font-semibold text-desert-gold uppercase tracking-wider">{farmName}</span>
-            <h1 className="text-3xl font-serif font-bold text-gray-900 mt-1">{productName}</h1>
-            <p className="text-gray-600 mt-4 leading-relaxed">{productDesc}</p>
+            <span className="text-sm font-bold text-[#D4AF37] uppercase tracking-wider">{farmName}</span>
+            <h1 className="text-4xl font-serif font-bold text-[#3E2723] mt-2">{productName}</h1>
+            <p className="text-gray-600 mt-4 leading-relaxed text-base">{productDesc}</p>
           </div>
 
-          <div className="border-t border-b border-gray-100 py-6 space-y-4">
-            <h3 className="font-bold text-gray-900">{t('product.variants', locale)}</h3>
+          <div className="border-t border-b border-gray-200 py-6 space-y-4">
+            <h3 className="font-serif font-bold text-lg text-[#3E2723]">{t('product.variants', locale)}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {product.product_variants?.map((variant: any) => (
-                <div key={variant.id} className="border border-gray-200 rounded-xl p-4 flex flex-col justify-between hover:border-desert-gold transition">
+                <div key={variant.id} className="border border-gray-200 rounded-2xl p-5 flex flex-col justify-between hover:border-[#D4AF37] transition bg-white shadow-sm">
                   <div>
-                    <span className="text-xs text-gray-500 font-medium">SKU: {variant.sku}</span>
-                    <div className="font-bold text-lg text-gray-900 mt-1">{variant.price_dzd} DZD</div>
-                    <span className="text-xs text-gray-600 mt-1 block">{variant.weight_grams}g</span>
+                    <span className="text-xs text-gray-400 font-medium">SKU: {variant.sku}</span>
+                    <div className="font-bold text-2xl text-[#D4AF37] mt-1">{variant.price_dzd} DZD</div>
+                    <span className="text-xs text-gray-600 mt-1 block font-medium">{variant.weight_grams}g package</span>
                   </div>
                   <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                    <span>{t('product.stock', locale)}: {variant.stock_qty}</span>
-                    <span className="text-green-600 font-medium">Available</span>
+                    <span>Stock: {variant.stock_qty}</span>
+                    <span className="text-green-600 font-bold">In Stock</span>
                   </div>
                 </div>
               ))}
@@ -144,7 +144,9 @@ export default async function ProductDetailPage({
 
           <div>
             {firstVariant ? (
-              <AddToCartButton variantId={firstVariant.id} label={t('product.addToCart', locale)} />
+              <div className="w-full">
+                <AddToCartButton variantId={firstVariant.id} label={t('product.addToCart', locale)} />
+              </div>
             ) : (
               <p className="text-sm text-gray-500">No variants available</p>
             )}
@@ -153,12 +155,12 @@ export default async function ProductDetailPage({
       </div>
 
       {/* Customer Reviews Section */}
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-6">
-        <h3 className="font-serif font-bold text-xl text-gray-900">Customer Reviews</h3>
+      <div className="bg-white rounded-2xl p-8 shadow-premium border border-gray-100 space-y-6">
+        <h3 className="font-serif font-bold text-2xl text-[#3E2723]">Customer Reviews</h3>
         {reviews && reviews.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {reviews.map((rev: any) => (
-              <div key={rev.id} className="border-b pb-4 space-y-2">
+              <div key={rev.id} className="border-b border-gray-100 pb-4 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="font-bold text-gray-900 text-sm">{rev.profiles?.full_name || 'Verified Customer'}</div>
                   <div className="text-amber-500 font-bold text-sm">{'⭐'.repeat(rev.rating)}</div>
