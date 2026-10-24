@@ -9,8 +9,9 @@
     "phaseNotice": "Phase A — Foundation."
   },
   "home": {
-    "title": "Welcome to Desert Gold",
-    "subtitle": "Premium dates e-commerce marketplace featuring selected oasis farms."
+    "hero": {
+      "subtitle": "Premium dates, verified quality, transparent provenance."
+    }
   },
   "catalog": {
     "title": "Product Catalog",
@@ -118,5 +119,12 @@
     "save": "Save",
     "noFarms": "No farms found",
     "noProducts": "No products found"
+  },
+  "brand": {
+    "name": "Desert Gold"
+  },
+  "nav": {
+    "catalog": "Catalog",
+    "farms": "Farms"
   }
 }

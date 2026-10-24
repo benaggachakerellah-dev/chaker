@@ -9,8 +9,9 @@
     "phaseNotice": "Phase A — Fondation."
   },
   "home": {
-    "title": "Bienvenue sur Or du Désert",
-    "subtitle": "Marketplace e-commerce de dattes d'exception issues des meilleures oasiens."
+    "hero": {
+      "subtitle": "Dattes premium, qualité vérifiée et provenance transparente."
+    }
   },
   "catalog": {
     "title": "Catalogue des Produits",
@@ -118,5 +119,12 @@
     "save": "Enregistrer",
     "noFarms": "Aucune ferme trouvée",
     "noProducts": "Aucun produit trouvé"
+  },
+  "brand": {
+    "name": "Desert Gold"
+  },
+  "nav": {
+    "catalog": "Catalogue",
+    "farms": "Fermes"
   }
 }
