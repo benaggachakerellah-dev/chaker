@@ -3,116 +3,99 @@
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Locale, locales } from '@/lib/i18n/config';
 
-export default function AuthPage({ params }: { params: { locale: string } }) {
+export default function AuthPage({ params }: { params: { locale: Locale } }) {
   const { locale } = params;
   const router = useRouter();
   const supabase = createClient();
-
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [error, setError] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const isAr = locale === 'ar';
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
+    setError(null);
 
     try {
       if (isLogin) {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-
-        // Fetch profile to redirect correctly
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', data.user.id)
-          .single();
-
-        const role = profile?.role || 'customer';
-        if (role === 'admin') router.push(`/${locale}/admin`);
-        else if (role === 'farm') router.push(`/${locale}/farm`);
-        else router.push(`/${locale}/account/orders`);
       } else {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName, role: 'customer' }
-          }
-        });
+        const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        alert('Registration successful! Please sign in.');
-        setIsLogin(true);
       }
+      router.push(`/${locale}/account/orders`);
+      router.refresh();
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
+      setError(err.message || 'حدث خطأ');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto px-6 py-20">
-      <div className="bg-white border border-[#E7DED1] rounded-lg p-8 shadow-subtle space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-serif font-bold text-[#35251C]">
-            {isLogin ? (locale === 'ar' ? 'تسجيل الدخول' : 'Sign In') : (locale === 'ar' ? 'إنشاء حساب جديد' : 'Create Account')}
-          </h1>
-          <p className="text-xs text-gray-500">
-            {isLogin ? (locale === 'ar' ? 'أدخل بيانات حسابك للوصول إلى لوحة التحكم والطلبات' : 'Access your dashboard and orders') : (locale === 'ar' ? 'انضم إلى منصة الذهب الصحراوي' : 'Join the Desert Gold marketplace')}
-          </p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7] px-4">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-premium p-8 border border-[#E7DED1]">
+        <h1 className="text-3xl font-bold text-center mb-6 text-[#3E2723]">
+          {isAr ? (isLogin ? 'تسجيل الدخول' : 'إنشاء حساب جديد') : (isLogin ? 'Login' : 'Register')}
+        </h1>
+        
+        {error && <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm">{error}</div>}
 
-        {error && (
-          <div className="bg-red-50 text-red-700 text-xs p-3 rounded border border-red-200">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleAuth} className="space-y-4">
-          {!isLogin && (
-            <Input
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1 text-gray-700">{isAr ? 'البريد الإلكتروني' : 'Email'}</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 border border-[#E7DED1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
               required
-              label={locale === 'ar' ? 'الاسم الكامل' : 'Full Name'}
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
             />
-          )}
-          <Input
-            required
-            label={locale === 'ar' ? 'البريد الإلكتروني' : 'Email Address'}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            required
-            label={locale === 'ar' ? 'كلمة المرور' : 'Password'}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <Button type="submit" disabled={loading} className="w-full py-3 mt-2">
-            {loading ? (locale === 'ar' ? 'جاري المعالجة...' : 'Processing...') : (isLogin ? (locale === 'ar' ? 'دخول' : 'Sign In') : (locale === 'ar' ? 'تسجيل' : 'Register'))}
-          </Button>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1 text-gray-700">{isAr ? 'كلمة المرور' : 'Password'}</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 border border-[#E7DED1] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#3E2723] text-white py-3 rounded-lg font-medium hover:bg-[#3E2723]/90 transition disabled:opacity-50"
+          >
+            {loading ? (isAr ? 'جارٍ التحميل...' : 'Loading...') : (isAr ? (isLogin ? 'دخول' : 'تسجيل') : (isLogin ? 'Login' : 'Register'))}
+          </button>
         </form>
 
-        <div className="text-center pt-2">
+        <p className="text-center text-sm mt-4 text-gray-600">
+          {isAr ? (isLogin ? 'ليس لديك حساب؟' : 'لديك حساب بالفعل؟') : (isLogin ? "Don't have an account?" : 'Already have an account?')}
           <button
+            type="button"
             onClick={() => setIsLogin(!isLogin)}
-            className="text-xs text-[#67402D] hover:underline font-medium"
+            className="text-[#D4AF37] font-bold hover:underline ms-1"
           >
-            {isLogin ? (locale === 'ar' ? 'ليس لديك حساب؟ أنشئ حساباً جديداً' : "Don't have an account? Sign up") : (locale === 'ar' ? 'لديك حساب بالفعل؟ سجل دخولك' : 'Already have an account? Sign in')}
+            {isAr ? (isLogin ? 'إنشاء حساب' : 'تسجيل الدخول') : (isLogin ? 'Register' : 'Login')}
           </button>
+        </p>
+
+        <div className="mt-6 p-4 bg-[#F7F3EB] rounded-lg text-xs text-gray-700 border border-[#E7DED1]">
+          <p className="font-bold mb-1">💡 {isAr ? 'حسابات تجريبية:' : 'Demo Accounts:'}</p>
+          <ul className="space-y-1">
+            <li>customer@desertgold.com / password123</li>
+            <li>farm@desertgold.com / password123</li>
+            <li>admin@desertgold.com / password123</li>
+          </ul>
         </div>
       </div>
     </div>
