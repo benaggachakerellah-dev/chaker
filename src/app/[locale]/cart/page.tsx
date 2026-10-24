@@ -1,9 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
 import { Locale, locales } from '@/lib/i18n/config';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export default async function CartPage({ params }: { params: { locale: Locale } }) {
   const { locale } = params;
@@ -23,27 +26,33 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
     );
   }
 
-  // Fetch cart items with product and variant details
-  const { data: cartItems, error } = await supabase
-    .from('cart_items')
-    .select(`
-      id,
-      quantity,
-      product_variants (
-        id,
-        price_dzd,
-        package_weight_g,
-        products (name_ar, name_fr, name_en, farms (name_ar, name_fr, name_en))
-      )
-    `)
-    .eq('carts.user_id', user.id)
-    .order('id');
+  // 1. Get user cart
+  const { data: cart } = await supabase
+    .from('carts')
+    .select('id')
+    .eq('user_id', user.id)
+    .single();
 
-  if (error) {
-    console.error('Cart fetch error:', error);
+  let items: any[] = [];
+  if (cart) {
+    // 2. Get cart items using cart_id
+    const { data: cartItems } = await supabase
+      .from('cart_items')
+      .select(`
+        id,
+        quantity,
+        product_variants (
+          id,
+          price_dzd,
+          weight_grams,
+          products (name_ar, name_fr, name_en)
+        )
+      `)
+      .eq('cart_id', cart.id);
+
+    items = cartItems || [];
   }
 
-  const items = cartItems || [];
   const total = items.reduce((sum: number, item: any) => {
     return sum + (item.product_variants?.price_dzd || 0) * item.quantity;
   }, 0);
@@ -53,7 +62,7 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
       <h1 className="text-3xl font-bold mb-8 text-[#3E2723]">{isAr ? 'سلة المشتريات' : 'Shopping Cart'}</h1>
 
       {items.length === 0 ? (
-        <div className="text-center py-20">
+        <div className="text-center py-20 bg-white rounded-xl border border-[#E7DED1] shadow-subtle">
           <p className="text-gray-600 text-xl mb-6">{isAr ? 'سلة المشتريات فارغة' : 'Your cart is empty'}</p>
           <Link href={`/${locale}/catalog`} className="bg-[#3E2723] text-white px-6 py-3 rounded-lg inline-block">
             {isAr ? 'تصفح المنتجات' : 'Browse Products'}
@@ -67,11 +76,11 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
               const product = variant?.products;
               const name = isAr ? product?.name_ar : product?.name_en;
               return (
-                <div key={item.id} className="bg-white p-4 rounded-xl border border-[#E7DED1] flex justify-between items-center">
+                <div key={item.id} className="bg-white p-4 rounded-xl border border-[#E7DED1] flex justify-between items-center shadow-subtle">
                   <div>
-                    <h3 className="font-bold text-[#3E2723]">{name}</h3>
+                    <h3 className="font-bold text-[#3E2723]">{name || 'Product'}</h3>
                     <p className="text-sm text-gray-600">
-                      {variant?.package_weight_g}g - {variant?.price_dzd} DZD
+                      {variant?.weight_grams}g - {variant?.price_dzd} DZD
                     </p>
                   </div>
                   <div className="text-center">
@@ -85,7 +94,7 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
             })}
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-[#E7DED1] h-fit">
+          <div className="bg-white p-6 rounded-xl border border-[#E7DED1] h-fit shadow-subtle">
             <h2 className="text-xl font-bold mb-4 text-[#3E2723]">{isAr ? 'ملخص الطلب' : 'Order Summary'}</h2>
             <div className="flex justify-between mb-2">
               <span>{isAr ? 'المجموع الفرعي:' : 'Subtotal:'}</span>
