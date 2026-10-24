@@ -14,10 +14,10 @@ export default async function LocaleLayout({
 }) {
   const { locale } = params;
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
-  const isAr = locale === 'ar';
 
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  
   let unreadCount = 0;
   if (user) {
     const { count } = await supabase
@@ -29,95 +29,80 @@ export default async function LocaleLayout({
   }
 
   return (
-    <div dir={dir} lang={locale} className="min-h-screen flex flex-col bg-[#F7F3EB] text-[#27231F]">
-      <header className="bg-white border-b border-[#E7DED1] sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-          <Link href={`/${locale}`} className="text-xl font-bold font-serif text-[#35251C] flex items-center gap-2">
-            <span className="text-2xl">🌴</span>
-            <span>{isAr ? 'الذهب الصحراوي' : 'Desert Gold'}</span>
+    <div dir={dir} lang={locale} className="min-h-screen flex flex-col bg-[#FDFBF7]">
+      {/* Navbar */}
+      <header className="bg-white border-b border-[#E7DED1] py-4 px-6 flex justify-between items-center shadow-sm">
+        <Link href={`/${locale}`} className="text-xl font-bold font-serif text-[#3E2723] flex items-center gap-2 no-underline">
+          <span>🌴</span> Desert Gold
+        </Link>
+        
+        <div className="flex items-center gap-6">
+          <Link href={`/${locale}/catalog`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline">
+            {locale === 'ar' ? 'الكتالوج' : 'Catalog'}
           </Link>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href={`/${locale}`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
-              {isAr ? 'الرئيسية' : 'Home'}
-            </Link>
-            <Link href={`/${locale}/catalog`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
-              {isAr ? 'الكتالوج' : 'Catalog'}
-            </Link>
-            <Link href={`/${locale}/farms`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition">
-              {isAr ? 'المزارع' : 'Farms'}
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-5">
-            <Link href={`/${locale}/cart`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition flex items-center gap-1.5">
-              <span>🛒</span>
-              <span className="hidden sm:inline">{isAr ? 'السلة' : 'Cart'}</span>
-            </Link>
-            <Link href={`/${locale}/account/orders`} className="text-sm font-medium text-[#35251C] hover:text-[#67402D] transition flex items-center gap-1.5">
-              <span>📦</span>
-              <span className="hidden sm:inline">{isAr ? 'طلباتي' : 'Orders'}</span>
-            </Link>
-            {user && (
-              <Link href={`/${locale}/account/notifications`} className="relative text-lg p-1">
+          <Link href={`/${locale}/farms`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline">
+            {locale === 'ar' ? 'المزارع' : 'Farms'}
+          </Link>
+          <Link href={`/${locale}/cart`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline flex items-center gap-1">
+            {locale === 'ar' ? 'السلة' : 'Cart'} 🛒
+          </Link>
+          
+          {user ? (
+            <>
+              <Link href={`/${locale}/account/orders`} className="text-sm font-medium text-gray-700 hover:text-[#3E2723] transition no-underline">
+                {locale === 'ar' ? 'طلباتي' : 'Orders'}
+              </Link>
+              <Link href={`/${locale}/account/notifications`} className="relative text-xl no-underline">
                 🔔
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#626C45] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                     {unreadCount}
                   </span>
                 )}
               </Link>
-            )}
-          </div>
+              <form action="/auth/signout" method="post" className="m-0">
+                <button type="submit" className="text-sm font-medium text-red-600 hover:text-red-800 transition">
+                  {locale === 'ar' ? 'تسجيل الخروج' : 'Logout'}
+                </button>
+              </form>
+            </>
+          ) : (
+            <Link href={`/${locale}/auth`} className="bg-[#3E2723] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#3E2723]/90 transition no-underline">
+              {locale === 'ar' ? 'تسجيل الدخول' : 'Login'}
+            </Link>
+          )}
         </div>
       </header>
 
+      {/* Main Content */}
       <main className="flex-1">{children}</main>
 
-      <footer className="bg-[#35251C] text-[#F7F3EB] pt-16 pb-12 border-t border-[#E7DED1]/20">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-          <div className="space-y-4">
-            <h3 className="font-serif text-lg font-bold text-white flex items-center gap-2">
-              <span>🌴</span> {isAr ? 'الذهب الصحراوي' : 'Desert Gold'}
-            </h3>
-            <p className="text-sm text-[#E7DED1]/80 leading-relaxed">
-              {isAr
-                ? 'منصة التجارة الإلكترونية للتمور الفاخرة من أودية ومزارع الجزائر المختارة بعناية.'
-                : 'Premium date e-commerce marketplace featuring selected Algerian oasis farms and verified provenance.'}
-            </p>
+      {/* Footer */}
+      <footer className="bg-[#3E2723] text-white py-8 text-center text-sm">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 text-right">
+            <div>
+              <h4 className="font-bold mb-2">روابط سريعة</h4>
+              <ul className="space-y-1">
+                <li><Link href={`/${locale}/catalog`} className="hover:underline no-underline">المنتجات</Link></li>
+                <li><Link href={`/${locale}/farms`} className="hover:underline no-underline">المزارع</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-2">حسابي</h4>
+              <ul className="space-y-1">
+                <li><Link href={`/${locale}/account/orders`} className="hover:underline no-underline">طلباتي</Link></li>
+                <li><Link href={`/${locale}/account/notifications`} className="hover:underline no-underline">الإشعارات</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-2">الجودة والثقة</h4>
+              <p className="text-gray-300 text-xs">تمور مختارة بعناية، وفحص جودة صارم قبل الشحن.</p>
+            </div>
           </div>
-          <div>
-            <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
-              {isAr ? 'روابط سريعة' : 'Quick Links'}
-            </h4>
-            <ul className="space-y-2.5 text-sm text-[#E7DED1]/80">
-              <li><Link href={`/${locale}/catalog`} className="hover:text-white transition">{isAr ? 'كتالوج المنتجات' : 'Product Catalog'}</Link></li>
-              <li><Link href={`/${locale}/farms`} className="hover:text-white transition">{isAr ? 'المزارع الشريكة' : 'Our Partner Farms'}</Link></li>
-              <li><Link href={`/${locale}/cart`} className="hover:text-white transition">{isAr ? 'سلة المشتريات' : 'Shopping Cart'}</Link></li>
-            </ul>
+          <div className="border-t border-gray-600 pt-4 text-xs text-gray-400">
+            © Desert Gold 2026. Verified Provenance & Premium Oasis Dates.
           </div>
-          <div>
-            <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
-              {isAr ? 'حسابي' : 'Account'}
-            </h4>
-            <ul className="space-y-2.5 text-sm text-[#E7DED1]/80">
-              <li><Link href={`/${locale}/account/orders`} className="hover:text-white transition">{isAr ? 'طلباتي' : 'My Orders'}</Link></li>
-              <li><Link href={`/${locale}/account/notifications`} className="hover:text-white transition">{isAr ? 'الإشعارات' : 'Notifications'}</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium text-white mb-4 text-sm tracking-wide uppercase">
-              {isAr ? 'الجودة والثقة' : 'Trust & Quality'}
-            </h4>
-            <p className="text-xs text-[#E7DED1]/70 leading-relaxed">
-              {isAr
-                ? 'جميع التمور تخضع لفحص دقيق للرطوبة والنقاء وفق أعلى معايير الجودة الزراعية.'
-                : 'All dates undergo rigorous 5-point quality inspection for moisture, size, and purity.'}
-            </p>
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-[#E7DED1]/10 text-center text-xs text-[#E7DED1]/60">
-          © 2026 Desert Gold. All rights reserved. Verified Provenance & Premium Oasis Dates.
         </div>
       </footer>
     </div>
