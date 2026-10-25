@@ -1,31 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --palm: #35251C;
-  --date: #67402D;
-  --sand: #D9BD91;
-  --ivory: #F7F3EB;
-  --olive: #626C45;
-  --subtle-border: #E7DED1;
-  --background: #F7F3EB;
-  --text: #27231F;
-   --background: #F7F3EB;
-  --foreground: #35251C;
+  --background: #FDFBF7;
+  --foreground: #1F2937;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', sans-serif;
-  scroll-behavior: smooth;
-}
-
-[dir="rtl"] body {
-  font-family: 'IBM Plex Sans Arabic', sans-serif;
 }
 
 a {
