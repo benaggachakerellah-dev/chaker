@@ -30,7 +30,20 @@ export default function AuthPage({ params }: { params: { locale: Locale } }) {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
       }
-      router.push(`/${locale}/account/orders`);
+      // Get user role after login
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', (await supabase.auth.getUser()).data.user?.id)
+  .single();
+
+if (profile?.role === 'admin') {
+  router.push(`/${locale}/admin`);
+} else if (profile?.role === 'farm') {
+  router.push(`/${locale}/farm`);
+} else {
+  router.push(`/${locale}/account/orders`);
+}
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'حدث خطأ');
