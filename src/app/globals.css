@@ -13,11 +13,13 @@
   --subtle-border: #E7DED1;
   --background: #F7F3EB;
   --text: #27231F;
+   --background: #F7F3EB;
+  --foreground: #35251C;
 }
 
 body {
   background-color: var(--background);
-  color: var(--text);
+  color: var(--foreground);
   font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;
 }

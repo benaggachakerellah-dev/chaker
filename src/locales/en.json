@@ -90,7 +90,10 @@
     "orders": "Farm Orders",
     "assignBatch": "Assign Batch",
     "moveToQC": "Move to Quality Check",
-    "selectBatch": "Select Approved Batch"
+    "selectBatch": "Select Approved Batch",
+    "manageOrders": "Manage incoming orders, assign batches, and send items to quality control.",
+    "noIncomingOrders": "No incoming orders for this farm yet.",
+    "farmOrders": "Farm Orders"
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -118,7 +121,13 @@
     "actions": "Actions",
     "save": "Save",
     "noFarms": "No farms found",
-    "noProducts": "No products found"
+    "noProducts": "No products found",
+    "region": "Region",
+    "farmApproval": "Farm Approval"
+  },
+  "reviews": {
+    "customerReviews": "Customer Reviews",
+    "noReviews": "No reviews yet."
   },
   "brand": {
     "name": "Desert Gold"

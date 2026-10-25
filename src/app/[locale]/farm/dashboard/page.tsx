@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { Locale, locales } from '@/lib/i18n/config';
+import { t } from '@/lib/i18n/t';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -31,10 +32,10 @@ export default async function FarmDashboardPage({ params }: { params: { locale: 
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-serif font-bold text-[#35251C]">
-            {isAr ? 'لوحة تحكم المزرعة' : 'Farm Dashboard'}
+            {t('farm.title', locale)}
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            {farm ? farm.name : (isAr ? 'إدارة المزرعة والمنتجات' : 'Manage your farm and products')}
+            {farm ? farm.name : t('farm.manageOrders', locale)}
           </p>
         </div>
         <div className="flex gap-3">
@@ -42,7 +43,7 @@ export default async function FarmDashboardPage({ params }: { params: { locale: 
             {isAr ? 'إدارة المنتجات' : 'Manage Products'}
           </Link>
           <Link href={`/${locale}/farm/orders`} className="bg-[#67402D] text-white px-4 py-2 rounded-lg text-xs font-medium">
-            {isAr ? 'طلبات المزرعة' : 'Farm Orders'}
+            {t('farm.farmOrders', locale)}
           </Link>
           <Link href={`/${locale}/farm/settings`} className="border border-[#E7DED1] bg-white text-[#35251C] px-4 py-2 rounded-lg text-xs font-medium">
             {isAr ? 'الإعدادات' : 'Settings'}
@@ -67,7 +68,7 @@ export default async function FarmDashboardPage({ params }: { params: { locale: 
 
       <div className="bg-white border border-[#E7DED1] rounded-lg p-6 shadow-subtle space-y-4">
         <h2 className="font-serif font-bold text-lg text-[#35251C] border-b border-[#E7DED1] pb-3">
-          {isAr ? 'أحدث الطلبات المرتبطة بالمزرعة' : 'Recent Farm Orders'}
+          {t('farm.farmOrders', locale)}
         </h2>
         {recentOrders && recentOrders.length > 0 ? (
           <div className="divide-y divide-[#E7DED1]">
@@ -84,7 +85,7 @@ export default async function FarmDashboardPage({ params }: { params: { locale: 
             ))}
           </div>
         ) : (
-          <p className="text-xs text-gray-500">{isAr ? 'لا توجد طلبات حديثة.' : 'No recent orders.'}</p>
+          <p className="text-xs text-gray-500">{t('farm.noIncomingOrders', locale)}</p>
         )}
       </div>
     </div>

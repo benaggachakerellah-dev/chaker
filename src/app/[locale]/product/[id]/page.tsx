@@ -161,7 +161,7 @@ export default async function ProductDetailPage({
 
       {/* Customer Reviews Section */}
       <div className="bg-white rounded-lg p-8 shadow-subtle border border-[#E7DED1] space-y-6">
-        <h3 className="font-serif font-bold text-xl text-[#35251C]">Customer Reviews</h3>
+        <h3 className="font-serif font-bold text-xl text-[#35251C]">{t('reviews.customerReviews', locale)}</h3>
         {reviews && reviews.length > 0 ? (
           <div className="space-y-4">
             {reviews.map((rev: any) => (
@@ -176,14 +176,14 @@ export default async function ProductDetailPage({
             ))}
           </div>
         ) : (
-          <p className="text-xs text-gray-500">No reviews yet.</p>
+          <p className="text-xs text-gray-500">{t('reviews.noReviews', locale)}</p>
         )}
       </div>
 
       {/* Related Products */}
       {relatedProducts && relatedProducts.length > 0 && (
         <div className="space-y-6">
-          <h3 className="font-serif font-bold text-xl text-[#35251C]">Related Products</h3>
+          <h3 className="font-serif font-bold text-xl text-[#35251C]">{isAr ? 'منتجات ذات صلة' : 'Related Products'}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {relatedProducts.map((rel: any) => (
               <Link key={rel.id} href={`/${locale}/product/${rel.id}`} className="bg-white border border-[#E7DED1] rounded-lg p-4 shadow-subtle hover:border-[#35251C] transition">

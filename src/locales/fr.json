@@ -90,7 +90,10 @@
     "orders": "Commandes de la Ferme",
     "assignBatch": "Assigner un Lot",
     "moveToQC": "Envoyer au Contrôle Qualité",
-    "selectBatch": "Sélectionner un Lot Approuvé"
+    "selectBatch": "Sélectionner un Lot Approuvé",
+    "manageOrders": "Gérer les commandes entrantes, assigner des lots et envoyer les produits au contrôle qualité.",
+    "noIncomingOrders": "Aucune commande entrante pour cette ferme pour le moment.",
+    "farmOrders": "Commandes de la Ferme"
   },
   "admin": {
     "title": "Tableau de Bord Administrateur",
@@ -118,7 +121,13 @@
     "actions": "Actions",
     "save": "Enregistrer",
     "noFarms": "Aucune ferme trouvée",
-    "noProducts": "Aucun produit trouvé"
+    "noProducts": "Aucun produit trouvé",
+    "region": "Région",
+    "farmApproval": "Approbation des Fermes"
+  },
+  "reviews": {
+    "customerReviews": "Avis des clients",
+    "noReviews": "Aucun avis pour le moment."
   },
   "brand": {
     "name": "Desert Gold"
