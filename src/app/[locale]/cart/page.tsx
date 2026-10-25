@@ -1,17 +1,29 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import { Locale, locales } from '@/lib/i18n/config';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
 
 export const dynamic = 'force-dynamic';
-
-export async function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
 
 export default async function CartPage({ params }: { params: { locale: Locale } }) {
   const { locale } = params;
   const isAr = locale === 'ar';
-  const supabase = createClient();
+  
+  // Use SSR client with cookies
+  const cookieStore = cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name) { return cookieStore.get(name)?.value; },
+        set(name, value, options) { try { cookieStore.set({ name, value, ...options }); } catch (e) {} },
+        remove(name, options) { try { cookieStore.set({ name, value: '', ...options }); } catch (e) {} },
+      },
+    }
+  );
+
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -26,16 +38,15 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
     );
   }
 
-  // 1. Get user cart
+  // Fetch cart for user
   const { data: cart } = await supabase
     .from('carts')
     .select('id')
     .eq('user_id', user.id)
     .single();
 
-  let items: any[] = [];
+  let items = [];
   if (cart) {
-    // 2. Get cart items using cart_id
     const { data: cartItems } = await supabase
       .from('cart_items')
       .select(`
@@ -44,12 +55,11 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
         product_variants (
           id,
           price_dzd,
-          weight_grams,
+          package_weight_g,
           products (name_ar, name_fr, name_en)
         )
       `)
       .eq('cart_id', cart.id);
-
     items = cartItems || [];
   }
 
@@ -62,7 +72,7 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
       <h1 className="text-3xl font-bold mb-8 text-[#3E2723]">{isAr ? 'سلة المشتريات' : 'Shopping Cart'}</h1>
 
       {items.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-xl border border-[#E7DED1] shadow-subtle">
+        <div className="text-center py-20">
           <p className="text-gray-600 text-xl mb-6">{isAr ? 'سلة المشتريات فارغة' : 'Your cart is empty'}</p>
           <Link href={`/${locale}/catalog`} className="bg-[#3E2723] text-white px-6 py-3 rounded-lg inline-block">
             {isAr ? 'تصفح المنتجات' : 'Browse Products'}
@@ -76,15 +86,15 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
               const product = variant?.products;
               const name = isAr ? product?.name_ar : product?.name_en;
               return (
-                <div key={item.id} className="bg-white p-4 rounded-xl border border-[#E7DED1] flex justify-between items-center shadow-subtle">
+                <div key={item.id} className="bg-white p-4 rounded-xl border border-[#E7DED1] flex justify-between items-center">
                   <div>
-                    <h3 className="font-bold text-[#3E2723]">{name || 'Product'}</h3>
+                    <h3 className="font-bold text-[#3E2723]">{name}</h3>
                     <p className="text-sm text-gray-600">
-                      {variant?.weight_grams}g - {variant?.price_dzd} DZD
+                      {variant?.package_weight_g}g - {variant?.price_dzd} DZD
                     </p>
                   </div>
-                  <div className="text-center">
-                    <span className="font-bold">{item.quantity} ×</span>
+                  <div className="text-center font-bold">
+                    {item.quantity} ×
                   </div>
                   <div className="font-bold text-[#D4AF37]">
                     {(variant?.price_dzd || 0) * item.quantity} DZD
@@ -94,7 +104,7 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
             })}
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-[#E7DED1] h-fit shadow-subtle">
+          <div className="bg-white p-6 rounded-xl border border-[#E7DED1] h-fit">
             <h2 className="text-xl font-bold mb-4 text-[#3E2723]">{isAr ? 'ملخص الطلب' : 'Order Summary'}</h2>
             <div className="flex justify-between mb-2">
               <span>{isAr ? 'المجموع الفرعي:' : 'Subtotal:'}</span>
