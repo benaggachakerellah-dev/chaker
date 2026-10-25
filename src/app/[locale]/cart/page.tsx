@@ -45,8 +45,8 @@ export default async function CartPage({ params }: { params: { locale: Locale } 
     .eq('user_id', user.id)
     .single();
 
-  let items = [];
-  if (cart) {
+let items: any[] = []; 
+ if (cart) {
     const { data: cartItems } = await supabase
       .from('cart_items')
       .select(`
