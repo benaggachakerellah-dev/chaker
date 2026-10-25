@@ -1,6 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
-import { Locale, locales } from '@/lib/i18n/config';
+import { t } from '@/lib/i18n/t';
 import Link from 'next/link';
+import { Locale, locales } from '@/lib/i18n/config';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -10,226 +10,109 @@ export default async function HomePage({ params }: { params: { locale: Locale } 
   const { locale } = params;
   const isAr = locale === 'ar';
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const [
-    { data: featuredProducts },
-    { data: categories },
-    { data: farms }
-  ] = await Promise.all([
-    supabase.from('products').select('id, name_ar, name_fr, name_en, grade, farms(name_ar, name_fr, name_en), product_variants(price_dzd)').eq('is_active', true).limit(3),
-    supabase.from('categories').select('*').limit(3),
-    supabase.from('farms').select('*').eq('status', 'approved').limit(3)
-  ]);
-
   return (
-    <div className="flex flex-col min-h-screen bg-[#F7F3EB] text-[#27231F]">
-      {/* Hero Section */}
-      <section className="relative bg-[#F7F3EB] py-20 md:py-32 px-6 border-b border-[#E7DED1]">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <span className="inline-block px-3 py-1 rounded bg-[#626C45]/10 text-[#626C45] text-xs font-medium uppercase tracking-wider">
-              {isAr ? 'تمور ميسرة ومعتمدة' : 'Verified & Certified'}
-            </span>
-            <h1 className="text-4xl md:text-6xl font-serif font-bold text-[#35251C] leading-tight">
-              {isAr ? 'خير النخلة، يصل إلى مائدتك.' : 'The Bounty of the Palm, Delivered to Your Table.'}
-            </h1>
-            <p className="text-lg text-[#27231F]/80 max-w-lg leading-relaxed">
-              {isAr
-                ? 'اكتشف تمورًا مختارة من منتجين موثوقين، وتعرّف على أصنافها ومصدرها قبل أن تختار.'
-                : 'Discover handpicked dates from trusted producers, and explore their provenance before you choose.'}
-            </p>
-            <div className="pt-4 flex flex-wrap items-center gap-4">
-              <Link
-                href={`/${locale}/catalog`}
-                className="bg-[#35251C] text-white px-7 py-3.5 rounded-lg text-sm font-medium hover:bg-[#35251C]/90 transition"
-              >
-                {isAr ? 'اكتشف التمور' : 'Explore Catalog'}
-              </Link>
-              <Link
-                href={`/${locale}/farms`}
-                className="text-[#35251C] border border-[#E7DED1] px-7 py-3.5 rounded-lg text-sm font-medium hover:bg-white transition"
-              >
-                {isAr ? 'تعرّف على المنتجين' : 'Our Producers'}
-              </Link>
-            </div>
+    <div className="bg-[#F7F3EB] min-h-screen">
+      
+      {/* 1. HERO SECTION */}
+      <section className="relative overflow-hidden pt-20 pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+        <div className="flex-1 text-center lg:text-start z-10">
+          <span className="inline-block py-1 px-3 rounded-full bg-[#D9BD91]/30 text-[#67402D] text-sm font-semibold mb-6">
+            {isAr ? 'خير النخلة، بين يديك' : 'The Best of the Palm, In Your Hands'}
+          </span>
+          <h1 className="text-5xl lg:text-7xl font-bold text-[#35251C] leading-tight mb-6 font-serif">
+            {isAr ? (
+              <>فخامة التمور <br /><span className="text-[#67402D]">الجزائرية</span></>
+            ) : (
+              <>Premium <br /><span className="text-[#67402D]">Algerian Dates</span></>
+            )}
+          </h1>
+          <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">
+            {isAr 
+              ? 'اكتشف تموراً مختارة بعناية من أفضل المزارع الجزائرية. جودة موثقة، مصدر شفاف، وتوصيل إلى باب منزلك.'
+              : 'Discover carefully selected dates from the best Algerian farms. Verified quality, transparent origin, delivered to your door.'}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Link href={`/${locale}/catalog`} className="bg-[#35251C] text-white px-8 py-4 rounded-lg font-bold hover:bg-[#67402D] transition-colors duration-300 text-center">
+              {isAr ? 'تسوق الآن' : 'Shop Now'}
+            </Link>
+            <Link href={`/${locale}/farms`} className="bg-transparent border-2 border-[#35251C] text-[#35251C] px-8 py-4 rounded-lg font-bold hover:bg-[#35251C] hover:text-white transition-colors duration-300 text-center">
+              {isAr ? 'تعرف على المزارع' : 'Discover Farms'}
+            </Link>
           </div>
-          <div className="relative">
-            <div className="bg-gradient-to-br from-[#D9BD91]/30 to-[#67402D]/10 rounded-xl h-[400px] flex items-center justify-center border border-[#E7DED1] shadow-subtle">
-              <span className="text-8xl">🌴</span>
-            </div>
+        </div>
+
+        <div className="flex-1 relative w-full h-[400px] lg:h-[600px]">
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#D9BD91] to-[#F7F3EB] rounded-[2rem] transform rotate-3 scale-105 shadow-2xl opacity-50"></div>
+          <div className="absolute inset-0 bg-[#67402D] rounded-[2rem] overflow-hidden shadow-2xl flex items-center justify-center">
+             <span className="text-white/20 text-9xl font-serif">DG</span>
           </div>
         </div>
       </section>
 
-      {/* Shop by Variety / Categories */}
-      <section className="max-w-7xl mx-auto px-6 py-20 w-full">
+      {/* 2. TRUST BAR */}
+      <section className="bg-white py-8 border-y border-[#E7DED1]">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-[#E7DED1]">
+          <div className="p-4">
+            <h3 className="font-bold text-[#35251C] text-lg mb-1">{isAr ? 'فحص جودة صارم' : 'Strict Quality Control'}</h3>
+            <p className="text-sm text-gray-500">{isAr ? 'كل دفعة تمر بـ 5 اختبارات' : 'Every batch passes 5 tests'}</p>
+          </div>
+          <div className="p-4">
+            <h3 className="font-bold text-[#35251C] text-lg mb-1">{isAr ? 'تتبع كامل للدفعة' : 'Full Batch Traceability'}</h3>
+            <p className="text-sm text-gray-500">{isAr ? 'اعرف مصدر تمرك بالضبط' : 'Know exactly where your dates come from'}</p>
+          </div>
+          <div className="p-4">
+            <h3 className="font-bold text-[#35251C] text-lg mb-1">{isAr ? 'الدفع عند الاستلام' : 'Cash on Delivery'}</h3>
+            <p className="text-sm text-gray-500">{isAr ? 'ادفع فقط عندما تستلم طلبك' : 'Pay only when you receive your order'}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. CATEGORIES */}
+      <section className="py-20 max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-2xl font-serif font-bold text-[#35251C]">
-              {isAr ? 'تسوق حسب الصنف' : 'Shop by Variety'}
-            </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {isAr ? 'أجود أنواع التمور الجزائرية الأصيلة' : 'Finest authentic Algerian date varieties'}
-            </p>
+            <h2 className="text-3xl font-bold text-[#35251C] font-serif mb-2">{isAr ? 'تسوق حسب الصنف' : 'Shop by Variety'}</h2>
+            <p className="text-gray-600">{isAr ? 'أجود أنواع التمور الجزائرية' : 'The finest Algerian dates'}</p>
           </div>
-          <Link href={`/${locale}/catalog`} className="text-xs font-medium text-[#67402D] hover:underline">
+          <Link href={`/${locale}/catalog`} className="text-[#67402D] font-bold hover:underline">
             {isAr ? 'عرض الكل ←' : 'View All →'}
           </Link>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categories && categories.length > 0 ? (
-            categories.map((cat: any) => {
-              const catName = isAr ? cat.name_ar : (cat.name_en || cat.name_ar);
-              return (
-                <Link key={cat.id} href={`/${locale}/catalog?category=${cat.id}`} className="group bg-white border border-[#E7DED1] rounded-lg p-6 shadow-subtle hover:border-[#35251C] transition">
-                  <div className="h-36 bg-[#F7F3EB] rounded-md mb-4 flex items-center justify-center text-4xl">
-                    🌾
-                  </div>
-                  <h3 className="font-serif font-bold text-lg text-[#35251C] group-hover:text-[#67402D] transition">{catName}</h3>
-                  <p className="text-xs text-gray-500 mt-1">{isAr ? 'اكتشف الأصناف المتاحة' : 'Explore available varieties'}</p>
-                </Link>
-              );
-            })
-          ) : (
-            <div className="col-span-3 text-sm text-gray-500 bg-white border border-[#E7DED1] rounded-lg p-6">
-              {isAr ? 'لا توجد تصنيفات حالياً' : 'No categories available'}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="bg-white border-t border-b border-[#E7DED1] py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <h2 className="text-2xl font-serif font-bold text-[#35251C]">
-                {isAr ? 'المنتجات المميزة' : 'Featured Products'}
-              </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                {isAr ? 'تمور مختارة ومختبرة مخبرياً لضمان الجودة' : 'Handpicked and laboratory-tested for purity'}
-              </p>
-            </div>
-            <Link href={`/${locale}/catalog`} className="text-xs font-medium text-[#67402D] hover:underline">
-              {isAr ? 'كتالوج المنتجات ←' : 'Browse Catalog →'}
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredProducts?.map((product: any) => {
-              const name = isAr ? product.name_ar : (product.name_en || product.name_ar);
-              const farmName = isAr ? product.farms?.name_ar : (product.farms?.name_en || product.farms?.name_ar);
-              const price = product.product_variants?.[0]?.price_dzd || 0;
-
-              return (
-                <Link key={product.id} href={`/${locale}/product/${product.id}`} className="group bg-[#F7F3EB] border border-[#E7DED1] rounded-lg p-5 shadow-subtle flex flex-col justify-between hover:border-[#35251C] transition">
-                  <div>
-                    <div className="h-48 bg-white rounded-md mb-4 flex items-center justify-center text-5xl">
-                      🌴
-                    </div>
-                    <span className="text-xs font-medium text-[#67402D] uppercase tracking-wide">{farmName || 'Oasis Farm'}</span>
-                    <h3 className="font-serif font-bold text-lg text-[#35251C] mt-1 group-hover:text-[#67402D] transition">{name}</h3>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-[#E7DED1] flex items-center justify-between">
-                    <span className="font-bold text-[#35251C]">{price} DZD</span>
-                    <span className="text-xs bg-[#35251C] text-white px-3 py-1.5 rounded font-medium">
-                      {isAr ? 'التفاصيل' : 'View'}
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Discover Producers (Farms) */}
-      <section className="max-w-7xl mx-auto px-6 py-20 w-full">
-        <div className="flex justify-between items-end mb-10">
-          <div>
-            <h2 className="text-2xl font-serif font-bold text-[#35251C]">
-              {isAr ? 'المنتجون الشركاء' : 'Our Producers'}
-            </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {isAr ? 'مزارع الواحات العريقة في Biskra و El Oued' : 'Heritage oasis farms in Biskra and El Oued'}
-            </p>
-          </div>
-          <Link href={`/${locale}/farms`} className="text-xs font-medium text-[#67402D] hover:underline">
-            {isAr ? 'جميع المزارع ←' : 'All Farms →'}
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {farms && farms.length > 0 ? (
-            farms.map((farm: any) => (
-              <div key={farm.id} className="bg-white border border-[#E7DED1] rounded-lg p-6 shadow-subtle space-y-3">
-                <div className="text-2xl">🌱</div>
-                <h3 className="font-serif font-bold text-lg text-[#35251C]">{farm.name}</h3>
-                <p className="text-xs text-gray-500">{isAr ? 'المنطقة:' : 'Region:'} {farm.region}</p>
-                <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">{farm.description || 'Verified oasis farm producer.'}</p>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {['عجوة / Ajwa', 'سكري / Sukari', 'مجهول / Medjool', 'دقلة نور / Deglet Nour'].map((variety, idx) => (
+            <Link key={idx} href={`/${locale}/catalog`} className="group relative h-48 rounded-xl overflow-hidden bg-gray-200">
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all z-10"></div>
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <span className="text-white font-bold text-xl">{variety.split(' / ')[isAr ? 0 : 1]}</span>
               </div>
-            ))
-          ) : (
-            <div className="col-span-3 text-sm text-gray-500 bg-white border border-[#E7DED1] rounded-lg p-6">
-              {isAr ? 'لا توجد مزارع معتمدة حالياً' : 'No approved farms available'}
-            </div>
-          )}
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* Trust & Service */}
-      <section className="bg-white border-t border-b border-[#E7DED1] py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div className="space-y-2">
-            <div className="text-3xl mb-2">🔒</div>
-            <h3 className="font-serif font-bold text-[#35251C]">{isAr ? 'دفع آمن عند الاستلام' : 'Secure Cash on Delivery'}</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              {isAr ? 'ادفع نقداً بكل أمان وسهولة عند استلاست طلبك حتى باب منزلك.' : 'Pay securely with cash upon delivery right to your doorstep.'}
-            </p>
+      {/* 4. EDITORIAL SECTION */}
+      <section className="py-20 bg-[#35251C] text-white">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1">
+            <div className="aspect-square bg-[#67402D] rounded-2xl w-full max-w-md mx-auto"></div>
           </div>
-          <div className="space-y-2">
-            <div className="text-3xl mb-2">🚚</div>
-            <h3 className="font-serif font-bold text-[#35251C]">{isAr ? 'توصيل موثوق وسريع' : 'Reliable & Fast Delivery'}</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              {isAr ? 'شحن منظم ومبرّد لضمان وصول التمور بحالتها الطازجة.' : 'Organized shipping ensuring dates arrive in pristine fresh condition.'}
-            </p>
-          </div>
-          <div className="space-y-2">
-            <div className="text-3xl mb-2">🛡️</div>
-            <h3 className="font-serif font-bold text-[#35251C]">{isAr ? 'جودة مفحوصة ومضمونة' : 'Verified Quality Inspection'}</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              {isAr ? 'كل دفعة تخضع لتقارير مختبرية دقيقة للرطوبة والصلاحية.' : 'Each batch undergoes rigorous laboratory checks for moisture and expiry.'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Editorial Section */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="bg-[#35251C] text-[#F7F3EB] rounded-lg p-10 md:p-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div className="space-y-4">
-            <span className="text-xs uppercase tracking-widest text-[#D9BD91]">
-              {isAr ? 'تراث واحات الصحراء' : 'Desert Oasis Heritage'}
+          <div className="flex-1 text-center md:text-start">
+            <span className="text-[#D9BD91] font-semibold tracking-wider uppercase text-sm mb-4 block">
+              {isAr ? 'قصتنا' : 'Our Story'}
             </span>
-            <h2 className="text-3xl font-serif font-bold leading-snug">
-              {isAr ? 'دليل حفظ واختيار التمور الفاخرة' : 'Guide to Storing & Selecting Fine Dates'}
+            <h2 className="text-3xl lg:text-4xl font-bold font-serif mb-6 leading-tight">
+              {isAr ? 'من واحات الجزائر، إلى مائدتك' : 'From the Oases of Algeria, to Your Table'}
             </h2>
-            <p className="text-sm text-[#E7DED1]/80 leading-relaxed">
-              {isAr
-                ? 'تحتاج التمور الفاخرة مثل الدقلة نور إلى درجات حرارة منخفضة للحفاظ على رطوبتها الطبيعية ومذاقها الفريد. تعرف على أسرار التخزين السليم.'
-                : 'Premium dates like Deglet Nour require controlled temperatures to preserve their natural moisture and exquisite flavor. Learn proper storage secrets.'}
+            <p className="text-gray-300 mb-8 leading-relaxed">
+              {isAr 
+                ? 'نعمل مباشرة مع كبار مزارعي التمور في بسكرة، الوادي، وغرداية. كل تمرة نقدمها تحمل قصة، قصة أرض طيبة، وزراعة أصيلة، وفحص دقيق يضمن أعلى معايير الجودة العالمية.'
+                : 'We work directly with major date farmers in Biskra, El Oued, and Ghardaia. Every date we offer carries a story—a story of fertile land, authentic farming, and rigorous inspection that meets the highest global quality standards.'}
             </p>
-          </div>
-          <div className="bg-[#67402D]/40 border border-[#E7DED1]/20 rounded-lg h-64 flex items-center justify-center text-6xl">
-            📖
           </div>
         </div>
       </section>
+
     </div>
   );
 }
